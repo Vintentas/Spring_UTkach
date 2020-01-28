@@ -1,0 +1,28 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans.xsd
+                    http://www.springframework.org/schema/context
+                    https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="consoleEventLogger" class="ConsoleEventLogger"/>
+
+    <bean id="fileEventLogger" class="fileEventLogger" init-method="init">
+        <constructor-arg value="logSpring.txt" />
+    </bean>
+
+    <bean id="casheFileEventLogger" class="CasheFileEventLogger" parent="fileEventLogger" destroy-method="destroy">
+        <constructor-arg value="100"/>
+    </bean>
+
+
+    <bean id="event" class="Event" scope="prototype">
+        <constructor-arg>
+            <bean class="java.util.Date"/>
+        </constructor-arg>
+        <constructor-arg>
+            <bean id="dateFormat" class="java.text.DateFormat" factory-method="getDateTimeInstance" />
+        </constructor-arg>
+    </bean>
+</beans>

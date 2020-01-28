@@ -1,4 +1,5 @@
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.IOException;
@@ -15,10 +16,10 @@ public class App {
         this.eventLogger = eventLogger;
     }
 
-    public void logEvent(String msg) throws IOException {
-        Event event = new Event(new Date(), DateFormat.getDateTimeInstance());
-        event.setMsg(msg);
-        eventLogger.logEvent(event);
+    public void logEvent(Event msg) throws IOException {
+      //  Event event = new Event(new Date(), DateFormat.getDateTimeInstance());
+      //  event.setMsg(msg);
+        eventLogger.logEvent(msg);
     }
 
     //use java
@@ -29,11 +30,20 @@ public class App {
 
    //use applicationContext in spring
     public static void main(String[] args) throws IOException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("config.xml");
+        ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("config.xml");
 
-        App app = (App) ctx.getBean("app1");
-        app.logEvent("Some event fore user 1");
-        app = (App) ctx.getBean("app2");
-        app.logEvent("Some event fore user 2");
+        App app = (App) ctx.getBean("app");
+
+        Event event = (Event) ctx.getBean("event");
+        app.logEvent(event);
+
+        event = (Event) ctx.getBean("event");
+        app.logEvent(event);
+
+        event = (Event) ctx.getBean("event");
+        event.setMsg("new massage");
+        app.logEvent(event);
+
+        ctx.close();
     }
 }
