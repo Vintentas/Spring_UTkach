@@ -25,4 +25,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.springframework/spring-jdbc
     compile group: 'org.springframework', name: 'spring-jdbc', version: '5.2.3.RELEASE'
+
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+
 }

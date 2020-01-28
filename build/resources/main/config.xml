@@ -2,12 +2,41 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                     xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-                    http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+                    http://www.springframework.org/schema/beans/spring-beans.xsd
+                    http://www.springframework.org/schema/context
+                    https://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="client" class="Client"/>
+    <bean id="client" class="Client">
+        <constructor-arg value="1"/>
+        <constructor-arg value="John Smith"/>
+    </bean>
+
+    <bean id="clientNoName" class="Client">
+    </bean>
+
 
     <bean id="eventLogger" class="ConsoleEventLogger"/>
 
-    <bean id="abb" class="App"/>
+
+    <bean id="app1" class="App">
+        <constructor-arg ref="client"/>
+        <constructor-arg ref="eventLogger"/>
+    </bean>
+
+    <bean id="app2" class="App">
+        <constructor-arg ref="clientNoName"/>
+        <constructor-arg ref="eventLogger"/>
+    </bean>
+
+
+    <bean id="event" class="Event" scope="prototype">
+        <constructor-arg>
+            <bean class="java.util.Date"/>
+        </constructor-arg>
+        <constructor-arg>
+            <bean id="dateFormat" class="java.text.DateFormat" factory-method="getDateTimeInstance" />
+        </constructor-arg>
+
+    </bean>
 
 </beans>
