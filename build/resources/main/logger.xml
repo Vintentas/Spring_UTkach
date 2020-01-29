@@ -21,8 +21,18 @@
         <constructor-arg>
             <bean class="java.util.Date"/>
         </constructor-arg>
+        <constructor-arg ref="dateFormat" />
+    </bean>
+
+    <bean id="dateFormat" class="java.text.DateFormat" factory-method="getDateTimeInstance" />
+
+
+    <bean id="combinedEventLogger" class="CombinedEventLogger">
         <constructor-arg>
-            <bean id="dateFormat" class="java.text.DateFormat" factory-method="getDateTimeInstance" />
+            <list>
+                <ref bean="consoleEventLogger"/>
+                <ref bean="fileEventLogger"/>
+            </list>
         </constructor-arg>
     </bean>
 </beans>

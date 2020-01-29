@@ -1,3 +1,5 @@
+package use_config;
+
 import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +18,8 @@ public class fileEventLogger  implements EventLogger{
         file.canWrite();
     }
 
-
-    public void logEvent(Event msg) throws IOException {
+    @Override
+    public void logEvent(EventType type, Event msg) throws IOException {
         FileUtils.writeStringToFile(file , msg.toString(), true);
     }
 

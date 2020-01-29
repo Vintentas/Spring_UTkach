@@ -6,23 +6,33 @@
                     http://www.springframework.org/schema/context
                     https://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="consoleEventLogger" class="ConsoleEventLogger"/>
+    <bean id="consoleEventLogger" class="use_config.ConsoleEventLogger"/>
 
-    <bean id="fileEventLogger" class="fileEventLogger" init-method="init">
+    <bean id="fileEventLogger" class="use_config.fileEventLogger" init-method="init">
         <constructor-arg value="logSpring.txt" />
     </bean>
 
-    <bean id="casheFileEventLogger" class="CasheFileEventLogger" parent="fileEventLogger" destroy-method="destroy">
+    <bean id="casheFileEventLogger" class="use_config.CasheFileEventLogger" parent="fileEventLogger" destroy-method="destroy">
         <constructor-arg value="100"/>
     </bean>
 
 
-    <bean id="event" class="Event" scope="prototype">
+    <bean id="event" class="use_config.Event" scope="prototype">
         <constructor-arg>
             <bean class="java.util.Date"/>
         </constructor-arg>
+        <constructor-arg ref="dateFormat" />
+    </bean>
+
+    <bean id="dateFormat" class="java.text.DateFormat" factory-method="getDateTimeInstance" />
+
+
+    <bean id="combinedEventLogger" class="use_config.CombinedEventLogger">
         <constructor-arg>
-            <bean id="dateFormat" class="java.text.DateFormat" factory-method="getDateTimeInstance" />
+            <list>
+                <ref bean="consoleEventLogger"/>
+                <ref bean="fileEventLogger"/>
+            </list>
         </constructor-arg>
     </bean>
 </beans>

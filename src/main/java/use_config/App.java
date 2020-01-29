@@ -1,30 +1,32 @@
-import org.springframework.context.ApplicationContext;
+package use_config;
+
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.util.Date;
+import java.util.Map;
 
 public class App {
 
     Client client;
     EventLogger eventLogger;
+    Map<EventType, EventLogger> loggers;
 
-    public App(Client client, EventLogger eventLogger){
+    public App(Client client, EventLogger eventLogger, Map<EventType, EventLogger> loggers){
         this.client = client;
         this.eventLogger = eventLogger;
+        this.loggers = loggers;
     }
 
-    public void logEvent(Event msg) throws IOException {
-      //  Event event = new Event(new Date(), DateFormat.getDateTimeInstance());
+    public void logEvent(EventType type, Event msg) throws IOException {
+      //  use_config.Event event = new use_config.Event(new Date(), DateFormat.getDateTimeInstance());
       //  event.setMsg(msg);
-        eventLogger.logEvent(msg);
+        eventLogger.logEvent(type, msg);
     }
 
     //use java
  /*   public static void main(String[] args) {
-        App app = new App(new Client("1","John Smith"), new ConsoleEventLogger());
+        use_config.App app = new use_config.App(new use_config.Client("1","John Smith"), new use_config.ConsoleEventLogger());
         app.logEvent("Some event fore user 1");
     }*/
 
@@ -35,15 +37,16 @@ public class App {
         App app = (App) ctx.getBean("app");
 
         Event event = (Event) ctx.getBean("event");
-        app.logEvent(event);
+        app.logEvent(EventType.INFO, event);
 
         event = (Event) ctx.getBean("event");
-        app.logEvent(event);
+        app.logEvent(EventType.INFO, event);
 
         event = (Event) ctx.getBean("event");
         event.setMsg("new massage");
-        app.logEvent(event);
+        app.logEvent(EventType.INFO, event);
 
         ctx.close();
     }
+
 }

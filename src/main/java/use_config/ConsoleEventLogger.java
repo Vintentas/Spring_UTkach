@@ -1,6 +1,9 @@
+package use_config;
+
 public class ConsoleEventLogger implements EventLogger {
 
-    public void logEvent (Event msg){
+    @Override
+    public void logEvent (EventType type, Event msg){
         System.out.println(msg.toString());
     }
 }
